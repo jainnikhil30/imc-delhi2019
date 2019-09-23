@@ -1,0 +1,21 @@
+- name: Deploy a Google Kubernetes Engine Cluster
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: Create the cluster
+    gcp_container_cluster:
+      name: "{{ gke_cluster_name }}"
+      initial_node_count: 2
+      master_auth:
+        username: "{{ gke_cluster_username }}"
+        password: "{{ gke_cluster_password }}"
+      node_config:
+        machine_type: n1-standard-4
+        disk_size_gb: 100
+      zone: "{{ gke_cluster_zone }}"
+      auth_kind: serviceaccount
+      project: "{{ gke_cluster_project }}"
+      service_account_file: "/etc/gcp.json"
+      state: present

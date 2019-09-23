@@ -1,0 +1,19 @@
+- name: Add the sgti application DNS record
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: Remove transaction if already exist
+    file:
+      path: transaction.yaml
+      state: absent
+
+  - name: Create DNS transation
+    shell: gcloud dns record-sets transaction start --zone="public" --project="{{ gke_project }}"
+
+  - name: Add webapp record to the transaction
+    shell: gcloud dns record-sets transaction add "{{ alb_dns_name }}." --name="{{ appdns }}.ishwar.io." --ttl=300 --type=CNAME --zone=public --project="{{ gke_project }}"
+
+  - name: Execute the transaction
+    shell: gcloud dns record-sets transaction execute --zone=public --project="{{ gke_project }}"

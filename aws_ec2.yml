@@ -1,0 +1,13 @@
+plugin: aws_ec2
+regions:
+  - ap-south-1
+filters:
+  tag:Name: ansible-sgti-instances
+  tag:app: web
+  tag:env: sgti
+keyed_groups:
+  - key: tags.Name
+    prefix: tag_Name_
+    separator: ""
+compose:
+  ansible_host: private_ip_address

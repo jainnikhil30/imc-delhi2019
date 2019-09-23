@@ -1,0 +1,99 @@
+- name: AWS Application Load Balancer
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - name: Get the instance IDs to add as targets for alb
+    ec2_instance_facts:
+      region: ap-south-1
+      filters:
+        availability-zone: ap-south-1a
+        instance-state-name: running
+        "tag:Name": ansible-sgti-instances
+    register: instance_facts
+
+  - name: Set fact and filter out the instance ids
+    set_fact:
+      instance_ids: "{{ instance_facts | json_query('instances[].instance_id') }}"
+
+  - debug:
+      var: instance_ids
+
+  - name: Create the alb target group
+    elb_target_group:
+      name: ansible-sgti-tg
+      region: ap-south-1
+      modify_targets: no
+      region: ap-south-1
+      protocol: http
+      port: 80
+      vpc_id: vpc-ce16f7a7
+      health_check_path: /
+      successful_response_codes: "200,250-260"
+      state: present
+      wait: true
+      wait_timeout: 20
+
+  - name: Add targets to the target group
+    elb_target:
+      region: ap-south-1
+      target_group_name: ansible-sgti-tg
+      target_id: "{{ item }}"
+      state: present
+    with_items: "{{ instance_ids }}"
+
+  - name: Create security group for alb
+    ec2_group:
+      name: "ansible-ec2-sg"
+      description: sg for webapp instances
+      vpc_id: "vpc-ce16f7a7"
+      region: ap-south-1
+      rules:
+        - proto: tcp
+          ports:
+          - 22
+          - 80
+          - 443
+          cidr_ip: 0.0.0.0/0
+    register: sg_facts
+
+  - name: Get vpc facts
+    ec2_vpc_subnet_facts:
+      region: ap-south-1
+      filters:
+        vpc-id: vpc-ce16f7a7
+    register: vpc_facts
+
+  - name: Create the ALB
+    elb_application_lb:
+      region: ap-south-1
+      name: ansible-sgti-alb
+      security_groups:
+        - ansible-ec2-sg
+      subnets:
+        - "{{ vpc_facts.subnets[1].id }}"
+        - "{{ vpc_facts.subnets[2].id }}"
+      listeners:
+        - Protocol: HTTPS
+          Port: 443
+          SslPolicy: ELBSecurityPolicy-2015-05
+          Certificates:
+            - CertificateArn: "{{ certificate_arn }}"
+          DefaultActions:
+            - Type: forward
+              TargetGroupName: ansible-sgti-tg
+      state: present
+    register: alb_facts
+
+  - name: Set fact for the dns name of the alb
+    set_fact:
+      alb_dns_name: "{{ alb_facts.dns_name }}"
+
+  - debug:
+      var: alb_dns_name
+
+  - set_stats:
+      data:
+        alb_dns_name: "{{ alb_dns_name }}"
+      per_host: no

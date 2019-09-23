@@ -1,0 +1,13 @@
+#AWS vars
+instance_count: 2
+certificate_arn: "arn:aws:acm:ap-south-1:768876501522:certificate/473b6064-a026-4b9a-82d1-1b4b60f9a5b8"
+
+#Google Cloud vars
+appdns: "sgti"
+gke_project: 'ishwar'
+gke_cluster_name: 'ansible-deployedd'
+gke_cluster_username: 'cluster-admin'
+gke_cluster_password: 'r3dh@t!9r3dh@t!9'
+gke_cluster_zone: 'asia-south1-a'
+gke_cluster_project: 'ansible-tower-249611'
+alb_dns_name: "dns-name"
