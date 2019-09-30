@@ -1,5 +1,5 @@
 - name: Deploy the web app
-  hosts: aws_ec2
+  hosts: all
   become: true
   
   roles:
