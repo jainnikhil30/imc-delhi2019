@@ -51,7 +51,7 @@
 
   - name: Create ec2 instances
     ec2:
-      key_name: ikanse
+      key_name: nikjainmum
       instance_type: t2.micro
       image: "{{ rhel_ami.image_id }}"
       wait: yes
