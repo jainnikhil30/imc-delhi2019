@@ -1,5 +1,5 @@
 ---
-- hosts: network
+- hosts: routers
   connection: local
   gather_facts: False
   tasks:
