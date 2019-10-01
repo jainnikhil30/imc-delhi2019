@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th>Test</th>
+            <th>Rtr1</th>
+            <th>Rtr2</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for test_case in test_suite %}
+        <tr>
+            <td>{{test_suite[test_case].name}}</td>
+            <td{% if hostvars['rtr1'][test_case]["skipped"] is defined %}> N/A {% elif hostvars['rtr1'][test_case]["failed"] == false %}> Test Passed{% elif hostvars['rtr1'][test_case]["failed"] == true %} style="background:red;"> Test Failed{% endif %}</td>
+            <td{% if hostvars['rtr2'][test_case]["skipped"] is defined %}> N/A {% elif hostvars['rtr2'][test_case]["failed"] == false %}> Test Passed{% elif hostvars['rtr2'][test_case]["failed"] == true %} style="background:red;"> Test Failed{% endif %}</td>
+        </tr>
+{% endfor %}
+
+    </tbody>
+</table>
+
+</body>
+</html>

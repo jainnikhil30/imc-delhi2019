@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th>Test</th>
+            <th>Rtr1</th>
+            <th>Rtr2</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GigabitEthernet1 interface up</td>
+            <td> Test Passed</td>
+            <td> Test Passed</td>
+        </tr>
+        <tr>
+            <td>Test reachability across tunnel rtr1->rtr2</td>
+            <td style="background:red;"> Test Failed</td>
+            <td> N/A </td>
+        </tr>
+        <tr>
+            <td>Tunnel0 interface up</td>
+            <td style="background:red;"> Test Failed</td>
+            <td> Test Passed</td>
+        </tr>
+        <tr>
+            <td>Test reachability to ansible</td>
+            <td> Test Passed</td>
+            <td style="background:red;"> Test Failed</td>
+        </tr>
+        <tr>
+            <td>Test reachability across tunnel rtr2->rtr1</td>
+            <td> N/A </td>
+            <td style="background:red;"> Test Failed</td>
+        </tr>
+        <tr>
+            <td>Test reachability to host1</td>
+            <td style="background:red;"> Test Failed</td>
+            <td> Test Passed</td>
+        </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>
