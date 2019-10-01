@@ -1,5 +1,0 @@
-- name: nginx service
-  systemd:
-    state: restarted
-    enabled: yes
-    name: nginx
