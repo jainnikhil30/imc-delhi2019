@@ -1,0 +1,11 @@
+---
+- hosts: rtr1
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Configure the interfaces
+      ios_config:
+        lines:
+          - "tunnel source 1.1.1.1"
+        parents: "interface Tunnel0"
+

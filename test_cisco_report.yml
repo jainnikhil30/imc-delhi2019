@@ -33,18 +33,17 @@
       register: test4
       ignore_errors: yes
 
-    - name: Test reachability to ansible
-      net_ping:
-        dest: "{{hostvars['ansible']['private_ip']}}"
-      register: test5
-      ignore_errors: yes
+    # - name: Test reachability to ansible
+    #   net_ping:
+    #     dest: "{{hostvars['ansible']['private_ip']}}"
+    #   register: test5
+    #   ignore_errors: yes
 
-    - name: Test reachability to host1
-      net_ping:
-        dest: "{{hostvars['host1']['private_ip']}}"
-      register: test6
-      ignore_errors: yes
-
+    # - name: Test reachability to host1
+    #   net_ping:
+    #     dest: "{{hostvars['host1']['private_ip']}}"
+    #   register: test6
+    #   ignore_errors: yes
     - name: create HTML report
       template:
         src: report.j2

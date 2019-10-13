@@ -1,0 +1,11 @@
+---
+- hosts: routers
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Configure the interfaces
+      ios_config:
+        lines:
+          - "tunnel source GigabitEthernet1"
+        parents: "interface Tunnel0"
+
